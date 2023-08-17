@@ -16,7 +16,7 @@ const Signup = () => {
         // overflow="hidden"
       >
         {/* <Box width="48px" height="48px" background="blackAlpha.300" /> */}
-        <Box
+        {/* <Box
           width="4rem"
           height="4rem"
           rounded="xl"
@@ -26,7 +26,25 @@ const Signup = () => {
           bgRepeat="no-repeat"
           as={Link}
           to="/"
-        />
+        /> */}
+        <Stack
+          width="4rem"
+          height="4rem"
+          padding="0.5rem"
+          rounded="xl"
+          background="blue.500"
+          as={Link}
+          to="/"
+        >
+          <Box
+            width="full"
+            height="full"
+            bgImage="url('src/assets/logo-pig.svg')"
+            bgSize="contain"
+            bgPosition="center"
+            bgRepeat="no-repeat"
+          />
+        </Stack>
         <Stack
           justify="flex-start"
           align="flex-start"
