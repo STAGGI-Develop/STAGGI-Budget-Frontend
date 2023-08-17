@@ -1,5 +1,5 @@
 import React from "react";
-import ContentLayout from "../layouts/ContentLayout";
+import ContentLayout from "../components/layouts/ContentLayout";
 
 const leftContent = () => {
   return <div>Grafico de torta + montos de los consumos por categoría</div>;

@@ -1,5 +1,5 @@
 import React from 'react'
-import ContentLayout from '../layouts/ContentLayout';
+import ContentLayout from '../components/layouts/ContentLayout';
 
 const leftContent = () => {
   return <div>Listados de presupuestos + botón para crear</div>;
