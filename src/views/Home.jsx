@@ -1,19 +1,28 @@
 import React from "react";
-import ContentLayout from "../components/layouts/ContentLayout";
-
-const leftContent = () => {
-  return <div>Grafico de torta + montos de los consumos por categoría</div>;
-};
-
-const rightContent = () => {
-  return <div>Balance actual + tarjetas de los Savings y Budgets. Abajo una lista con las últimas transacciones</div>;
-};
+import { Stack } from "@chakra-ui/react";
+import BalanceColumn from "../components/dashboard/BalanceColumn";
+import SavingsBudgetsColumn from "../components/dashboard/SavingBudgetColumn";
+import ChartColumn from "../components/dashboard/ChartColumn";
 
 const Home = () => {
   return (
-    <>
-      <ContentLayout leftContent={leftContent} rightContent={rightContent} />
-    </>
+    <Stack
+      h="full"
+      marginX="10rem"
+      marginY="1.5rem"
+      direction="row"
+      spacing="2rem"
+      // overflow="hidden"
+      // justify="flex-start"
+      // align="flex-start"
+    >
+      <SavingsBudgetsColumn />
+      <BalanceColumn />
+      <ChartColumn />
+      {/* <SavingsBudgets /> */}
+      {/* <Balance /> */}
+      {/* <Chart /> */}
+    </Stack>
   );
 };
 

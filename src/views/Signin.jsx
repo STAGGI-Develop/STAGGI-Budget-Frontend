@@ -43,6 +43,8 @@ export const Signin = () => {
         align='flex-start'
         spacing='40px'
         // overflow="hidden"
+        boxShadow='lg'
+        // background="#F4F5F7"
       >
         {/* <Box width="48px" height="48px" background="blackAlpha.300" /> */}
         {/* <Box
@@ -192,7 +194,7 @@ export const Signin = () => {
       </Stack>
 
       {/* Info section */}
-      <Stack w='50%' background='blackAlpha.300' />
+      <Stack w='50%' background='staggi-blue.600' />
     </Stack>
   )
 }

@@ -4,6 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 let token = ''
 
+// Método con autorización
 const call = (method, url, data = null) => {
   return axios[method](`${API_URL}${url}`, data, {
     headers: { Authorization: `Bearer ${token}` },
