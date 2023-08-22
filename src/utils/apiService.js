@@ -16,7 +16,6 @@ const call = (method, url, data = null) => {
 }
 
 const login = async credentials => {
-  console.log({ credentials })
   return axios
     .post(`${API_URL}/auth/login`, credentials)
     .then(response => {

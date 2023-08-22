@@ -6,38 +6,52 @@ import {
   Checkbox,
   Button,
   Spinner,
+  FormControl,
+  FormLabel,
 } from '@chakra-ui/react'
 import { useMutation } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
-import apiService from '../utils/apiService'
+import { apiUser } from '../utils/apiCalls'
 import { useInput } from '../hooks'
 
 export const Signin = () => {
   const navigate = useNavigate()
-  const { user: userService } = apiService
 
-  const { reset: resetEmail, ...email } = useInput('text')
-  const { reset: resetPassword, ...password } = useInput('password')
+  const {
+    reset: resetEmail,
+    touched: touchedEmail,
+    ...email
+  } = useInput('text')
+  const {
+    reset: resetPassword,
+    touched: touchedPassword,
+    ...password
+  } = useInput('password')
 
-  const mutation = useMutation(userService.login, {
+  const mutation = useMutation(apiUser.login, {
     onSuccess: () => {
       resetEmail()
       resetPassword()
       navigate('/dashboard')
     },
+    onError: error => console.log(error.message),
   })
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
+    e.preventDefault()
     mutation.mutate({ email: email.value, password: password.value })
   }
 
+  const isFormValid = email.value !== '' && password.value !== ''
+
   return (
-    <Stack flex={1} direction='row' h='100vh' minH='fit-content'>
+    <Stack flex={1} direction='row' minH='100vh'>
       {/* Form */}
       <Stack
         w='50%'
         paddingX='10rem'
         paddingTop='4rem'
+        paddingBottom='2rem'
         // paddingBottom="50px"
         justify='flex-start'
         align='flex-start'
@@ -92,20 +106,24 @@ export const Signin = () => {
 
         {/* Form */}
         <Stack
+          as={'form'}
+          onSubmit={handleSubmit}
           justify='flex-start'
           align='flex-start'
-          spacing='20px'
+          spacing='0px'
           alignSelf='stretch'
+          sx={{ display: 'grid', gap: '20px' }}
         >
-          <Stack
+          <FormControl
+            isRequired={true}
             justify='flex-start'
             align='flex-start'
             spacing='4px'
             alignSelf='stretch'
           >
-            <Text fontWeight='medium' fontSize='14px' color='black'>
-              Email*
-            </Text>
+            <FormLabel fontWeight='medium' fontSize='14px' color='black'>
+              Email
+            </FormLabel>
             <Input
               placeholder='Email'
               size='lg'
@@ -113,16 +131,17 @@ export const Signin = () => {
               alignSelf='stretch'
               {...email}
             />
-          </Stack>
-          <Stack
+          </FormControl>
+          <FormControl
+            isRequired={true}
             justify='flex-start'
             align='flex-start'
-            spacing='4px'
+            spacing='0px'
             alignSelf='stretch'
           >
-            <Text fontWeight='medium' fontSize='14px' color='black'>
-              Password*
-            </Text>
+            <FormLabel fontWeight='medium' fontSize='14px' color='black'>
+              Password
+            </FormLabel>
             <Input
               placeholder='Password'
               size='lg'
@@ -131,11 +150,18 @@ export const Signin = () => {
               {...password}
             />
             {mutation.isError && (
-              <Text fontWeight='medium' fontSize='14px' color='red' mx='auto'>
+              <Text
+                fontWeight='medium'
+                fontSize='14px'
+                color='red'
+                mx='auto'
+                w='fit-content'
+                pt={2}
+              >
                 Invalid credentials
               </Text>
             )}
-          </Stack>
+          </FormControl>
           <Stack
             direction='row'
             justify='space-between'
@@ -161,7 +187,8 @@ export const Signin = () => {
             </Button>
           ) : (
             <Button
-              onClick={handleSubmit}
+              type='submit'
+              isDisabled={!isFormValid}
               size='md'
               width='100%'
               colorScheme='blue'
