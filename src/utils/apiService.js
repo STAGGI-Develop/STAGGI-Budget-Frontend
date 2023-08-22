@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const API_URL = import.meta.env.API_URL;
+const token = ""
 
+// Método con autorización
 const call = (method, url, data = null) => {
-  return axios[method](`${API_URL}${url}`, data)
+  return axios[method](`${API_URL}${url}`, data, {headers: {Authorization: `Bearer ${token}`}})
     .then((response) => response.data)
     .catch((error) => {
       throw error;

@@ -142,7 +142,7 @@ const Signup = () => {
       </Stack>
 
       {/* Info section */}
-      <Stack w="50%" background="blackAlpha.300" />
+      <Stack w="50%" background="staggi-blue.600" />
     </Stack>
   );
 };
