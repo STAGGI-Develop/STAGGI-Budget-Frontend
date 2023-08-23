@@ -1,5 +1,18 @@
 import React from "react";
-import { Stack, Text } from "@chakra-ui/react";
+import {
+  Spinner,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import { apiTransaction } from "../../utils/apiCalls";
+import { useQuery } from "@tanstack/react-query";
 
 const BalanceCard = () => (
   <Stack layerStyle="card">
@@ -96,44 +109,95 @@ const BalanceCard = () => (
 );
 
 const BalanceColumn = () => {
+  const {
+    isLoading: loadingTransactions,
+    data: transactions,
+    isError: isErrorTransactions,
+    error: errorTransactions,
+  } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: apiTransaction.getAll,
+  });
   return (
     <Stack
       // w="full"
       h="full"
+      maxH="full"
       flex={0.4}
       direction="column"
       spacing=".5rem"
     >
-      <Text textStyle="cardHeader" color="gray.500">
-        Total balance
-      </Text>
+      <Stack>
+        <Text textStyle="cardHeader" color="gray.500">
+          Total balance
+        </Text>
 
-      <BalanceCard />
-      {/* <Stack
-        w="full"
-        h="15rem"
-        direction="column"
-        layerStyle="card"
-        justify="center"
-        align="center"
-      >
-        <div>Balance actual</div>
-      </Stack> */}
+        <BalanceCard />
+      </Stack>
 
-      <Text marginTop="1rem" textStyle="cardHeader" color="gray.500">
-        Last transactions
-      </Text>
-      <Stack
-        w="full"
-        h="full"
-        layerStyle="card"
-        justify="center"
-        align="center"
-      >
-        <div>Últimas transacciones</div>
+      {/*
+      --
+       Pendiente botones
+       --
+       */}
+      <Stack h="full">
+        <Text marginTop="1rem" textStyle="cardHeader" color="gray.500">
+          Last transactions
+        </Text>
+        {loadingTransactions ? (
+          <Stack
+            w="full"
+            h="auto"
+            direction="column"
+            layerStyle="card"
+            spacing="0rem"
+            align="center"
+          >
+            <Spinner
+              margin="1.5rem"
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.100"
+              color="pink.500"
+              size="xl"
+            />
+          </Stack>
+        ) : (
+          <Stack w="full" h="full" layerStyle="card">
+            <TransactionsTable item={transactions?.data} />
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
 };
 
 export default BalanceColumn;
+
+const TransactionsTable = ({ item }) => {
+  const CustomRow = ({ tr }) => (
+    <Tr>
+      <Td>{tr.Type}</Td>
+      <Td>{tr.Description}</Td>
+      <Td isNumeric>{`$${tr.Amount}`}</Td>
+    </Tr>
+  );
+  return (
+    <TableContainer>
+      <Table size="md">
+        <Thead background="gray.100">
+          <Tr>
+            <Th>Icon</Th>
+            <Th>Description</Th>
+            <Th isNumeric>Amount</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {item.slice(0, 9).map((e, i) => (
+            <CustomRow tr={e} key={i} />
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+};

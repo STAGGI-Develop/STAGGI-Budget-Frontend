@@ -78,6 +78,7 @@ const Navbar = () => {
     { to: "/saving", title: "Goals", icon: FlagIcon },
     { to: "/budget", title: "Budgets", icon: ChartIcon },
     { to: "/search", title: "Details", icon: SearchIcon },
+    { to: "/test", title: "Test", icon: null },
   ];
   return (
     <Stack
