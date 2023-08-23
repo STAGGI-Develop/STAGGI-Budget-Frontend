@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './components/layouts/BaseLayout'
 import Home from './views/Home'
 import Saving from './views/Saving'

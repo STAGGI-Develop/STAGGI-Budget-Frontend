@@ -13,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useInput } from '../hooks'
 import validateInput from '../utils/validateInput'
 import { apiUser } from '../utils/apiCalls'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 const Signup = () => {
   const navigate = useNavigate()
