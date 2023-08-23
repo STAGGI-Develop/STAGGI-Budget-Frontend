@@ -7,6 +7,7 @@ import Search from "./views/Search";
 import Settings from "./views/Settings";
 import Signin from "./views/Signin";
 import Signup from "./views/Signup";
+import Test from "./views/Test";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/budget" element={<Budget />} />
           <Route path="/search" element={<Search />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/test" element={<Test />} />
         </Route>
         <Route>
           <Route path="/signin" element={<Signin />} />
