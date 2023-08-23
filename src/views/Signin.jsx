@@ -9,7 +9,7 @@ import {
   FormControl,
   FormLabel,
 } from '@chakra-ui/react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router-dom'
 import { apiUser } from '../utils/apiCalls'
 import { useInput } from '../hooks'
