@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-// const MOCK = 'https://my-json-server.typicode.com/STAGGI-Develop/mock'
+// const API_URL = import.meta.env.VITE_API_URL
+const MOCK = 'https://my-json-server.typicode.com/STAGGI-Develop/mock'
 
 let token = ''
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: MOCK,
   headers: { Authorization: `Bearer ${token}` },
 })
 
