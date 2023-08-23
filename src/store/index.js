@@ -1,10 +1,10 @@
-import create from 'zustand';
-import budgetStore from './budgetStore';
-import savingStore from './savingStore';
+import { create } from 'zustand'
+import budgetStore from './budgetStore'
+import savingStore from './savingStore'
 
-const useStore = create((set) => ({
+const useStore = create(set => ({
   budgetStore: budgetStore(set),
   savingStore: savingStore(set),
-}));
+}))
 
-export default useStore;
+export default useStore
