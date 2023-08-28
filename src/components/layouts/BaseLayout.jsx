@@ -5,11 +5,10 @@ const Layout = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        backgroundColor: "#F4F5F7",
-        // overflowY: "hidden",
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        backgroundColor: '#F4F5F7'
       }}
     >
       <Navbar />

@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-// const MOCK = 'https://my-json-server.typicode.com/STAGGI-Develop/mock'
+// const API_URL = import.meta.env.VITE_API_URL
+const MOCK = 'http://localhost:3000'
 
 let token = ''
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: MOCK,
   headers: { Authorization: `Bearer ${token}` },
 })
 // export const serviceAccount = {
@@ -40,6 +40,7 @@ export const apiSaving = {
 
 export const apiTransaction = {
   getAll: () => api.get('/transactions'),
+  getFiltered: query => api.get(`/transactions?${query}`),
   getById: id => api.get(`/transactions/${id}`),
   create: data => api.post('/transactions', data),
   update: (id, data) => api.put(`/transactions/${id}`, data),
