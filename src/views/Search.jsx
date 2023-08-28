@@ -13,7 +13,7 @@ import {
 import { apiTransaction } from '../utils/apiCalls'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { TransactionsTable } from '../components/dashboard/BalanceColumn'
+import TransactionsTable from '../components/TransactionsTable'
 
 const leftContent = ({
   searchValue,
