@@ -7,7 +7,7 @@ const Layout = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh',
+        minHeight: '100vh',
         backgroundColor: '#F4F5F7',
       }}
     >
