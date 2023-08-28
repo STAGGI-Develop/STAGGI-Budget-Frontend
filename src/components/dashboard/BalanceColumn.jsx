@@ -6,7 +6,7 @@ import TransactionsTable from "../TransactionsTable";
 
 const BalanceCard2 = ({balance = -550}) => (
   <Stack layerStyle="card" direction="row">
-    <Text justify="start">
+    <Stack justify="start">
       <Stack
         paddingTop=".5rem"
         paddingBottom="1.5rem"
@@ -30,7 +30,7 @@ const BalanceCard2 = ({balance = -550}) => (
         <Text color="gray.600">Last month</Text>
         <Text color="gray.800">$ 1.354</Text>
       </Stack>
-    </Text>
+    </Stack>
 
     <Stack
       justify="flex-start"
