@@ -9,6 +9,10 @@ const api = axios.create({
   baseURL: API_URL,
   headers: { Authorization: `Bearer ${token}` },
 })
+// export const serviceAccount = {
+//   updateBalance: (amount, email),
+
+// }
 
 export const apiBudget = {
   getAll: () => api.get('/budgets'),
@@ -23,6 +27,7 @@ export const apiCategory = {
   create: data => api.post('/categories', data),
   update: (id, data) => api.put(`/categories/${id}`, data),
   delete: id => api.delete(`/categories/${id}`),
+  expendingByCategory: (data) => api.get(`/categories/expending`, data),
 }
 
 export const apiSaving = {
@@ -47,7 +52,7 @@ export const apiUser = {
       .post('/auth/login', { email, password })
       .then(response => (token = response.data)),
   register: data => api.post('/auth/register', data),
-  logout: () => api.post('/auth/logout').then(() => (token = '')),
+  logout: () => api.post('/auth/logout').then(() => (token = '')), // remove token from localstorage
   getProfile: () => api.get('/user/profile'),
   updateProfile: data => api.put('/user/profile', data),
   subscribe: data => api.post('/user/subscribe', data),

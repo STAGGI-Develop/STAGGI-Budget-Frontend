@@ -169,7 +169,7 @@ const SavingCard = ({ item }) => {
         flex="1"
         alignSelf="stretch"
       >
-        <Stack as={Link} to={`/goal/${item.Id}`}>
+        <Stack as={Link} to={`/goal/${item.id}`}>
           <Text
             fontWeight="medium"
             fontSize="1rem"
@@ -270,7 +270,7 @@ const BudgetCard = ({ item }) => {
         justify="center"
         spacing=".1rem"
       >
-        <Stack w="fit-content" as={Link} to={`/budget/${item.Id}`}>
+        <Stack w="fit-content" as={Link} to={`/budget/${item.id}`}>
           <Text
             fontWeight="medium"
             fontSize=".9rem"

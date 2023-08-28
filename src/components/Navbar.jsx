@@ -17,13 +17,13 @@ import {
   Text,
   useTab,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 // import home from "../assets/navbar/home.svg"
 import HomeIcon from "../assets/navbar/HomeIcon";
 import FlagIcon from "../assets/navbar/FlagIcon";
 import ChartIcon from "../assets/navbar/ChartIcon";
 import SearchIcon from "../assets/navbar/SearchIcon";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/display-name
 const CustomTab = React.forwardRef((props, ref) => {
@@ -75,11 +75,30 @@ const CustomTab = React.forwardRef((props, ref) => {
 const Navbar = () => {
   const navbarItems = [
     { to: "/dashboard", title: "Dashboard", icon: HomeIcon },
-    { to: "/saving", title: "Goals", icon: FlagIcon },
+    { to: "/goal", title: "Goals", icon: FlagIcon },
     { to: "/budget", title: "Budgets", icon: ChartIcon },
     { to: "/search", title: "Details", icon: SearchIcon },
     { to: "/test", title: "Test", icon: null },
   ];
+  const tabsIndex = {
+    dashboard: 0,
+    goal: 1,
+    budget: 2,
+    search: 3,
+    test: 4,
+  };
+
+  const [stateIndex, setStateIndex] = useState(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    const fullPath = location.pathname;
+    const path = fullPath?.split("/")[1];
+    let newIndex = tabsIndex[path] == undefined ? null : tabsIndex[path];
+
+    newIndex !== null ? setStateIndex(newIndex) : setStateIndex(null);
+  }, [location]);
+
   return (
     <Stack
       paddingX="20px"
@@ -138,12 +157,22 @@ const Navbar = () => {
           cursor="default"
           color="gray.100"
         >
-          <Text fontSize="1.2rem" fontWeight="bold">Budget</Text>
-          <Text fontSize=".7rem" color="gray.200" fontWeight="medium">by STAGGI</Text>
+          <Text fontSize="1.2rem" fontWeight="bold">
+            Budget
+          </Text>
+          <Text fontSize=".7rem" color="gray.200" fontWeight="medium">
+            by STAGGI
+          </Text>
         </Stack>
       </Stack>
 
-      <Tabs h="100%" size="lg" alignSelf="end" variant="unstyled">
+      <Tabs
+        index={stateIndex}
+        h="100%"
+        size="lg"
+        alignSelf="end"
+        variant="unstyled"
+      >
         <TabList h="full">
           {navbarItems.map((e, i) => (
             <CustomTab key={i} to={e.to} title={e.title} icon={e.icon} />

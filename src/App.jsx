@@ -1,5 +1,4 @@
 import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './components/layouts/BaseLayout'
 import Home from './views/Home'
 import Saving from './views/Saving'
@@ -10,18 +9,17 @@ import Signin from './views/Signin'
 import Signup from './views/Signup'
 import Test from "./views/Test";
 
-const queryClient = new QueryClient()
-
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Navigate to='/dashboard' />} />
             <Route path='/dashboard' element={<Home />} />
-            <Route path='/saving' element={<Saving />} />
+            <Route path='/goal' element={<Saving />} />
+            <Route path='/goal/:id' element={<Saving />} />
             <Route path='/budget' element={<Budget />} />
+            <Route path='/budget/:id' element={<Budget />} />
             <Route path='/search' element={<Search />} />
             <Route path='/settings' element={<Settings />} />
             <Route path="/test" element={<Test />} />
@@ -32,7 +30,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </QueryClientProvider>
   );
 }
 

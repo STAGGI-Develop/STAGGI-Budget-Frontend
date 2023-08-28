@@ -14,9 +14,9 @@ const ChartColumn = () => {
       <Text textStyle="cardHeader" color="gray.500">
         Last month expenses
       </Text>
-      <Stack w="full" h="full" layerStyle="card" direction="column">
-        <Stack>
-          <AspectRatio maxW="100%" ratio={1} flex={1} p="5rem">
+      <Stack w="full" h="auto" layerStyle="card" direction="column" alignItems="center">
+        <Stack w="130%" h="130%" margin="-64px">
+          <AspectRatio maxW="100%" ratio={1} >
             <PieChart data={expendingData.filter((e) => e.value != 0)} />
           </AspectRatio>
         </Stack>
