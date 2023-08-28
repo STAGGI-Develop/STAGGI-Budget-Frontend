@@ -35,7 +35,7 @@ const theme = extendTheme({
       boxShadow: "md",
       rounded: "xl",
       paddingX: "1rem",
-      paddingY: ".8rem",
+      paddingY: ".75rem",
     },
   },
   textStyles: {

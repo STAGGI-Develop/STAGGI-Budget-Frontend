@@ -33,8 +33,8 @@ const MyResponsivePie = ({data}) => (
       },
     }}
     data={data}
-    // margin={{ top: 64, right: 64, bottom: 64, left: 64 }}
-    margin={{ top: 12, right: 12, bottom: 12, left: 12 }}
+    margin={{ top: 72, right: 72, bottom: 72, left: 72 }}
+    // margin={{ top: 48, right: 48, bottom: 48, left: 48 }}
     valueFormat=" >-$,"
     sortByValue={true}
     innerRadius={0.45}

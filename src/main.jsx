@@ -13,7 +13,6 @@ ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        {/* <ChakraProvider> */}
         <App />
         <ReactQueryDevtools initialIsOpen={false} />
       </ChakraProvider>
