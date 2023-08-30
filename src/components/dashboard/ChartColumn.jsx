@@ -1,9 +1,34 @@
 import React from "react";
-import { AspectRatio, Spacer, Stack, Text } from "@chakra-ui/react";
+import { AspectRatio, Spacer, Spinner, Stack, Text } from "@chakra-ui/react";
 import PieChart from "../PieChart";
+import { apiCategory } from "../../utils/apiCalls";
+import { useQuery } from "@tanstack/react-query";
 
 const ChartColumn = () => {
-  return (
+  const { isLoading, data, isError, error } = useQuery({
+    queryKey: ["monthExpenses"],
+    queryFn: apiCategory.getMonth,
+  });
+
+  return isLoading ? (
+    <Stack
+      w="full"
+      h="auto"
+      direction="column"
+      layerStyle="card"
+      spacing="0rem"
+      align="center"
+    >
+      <Spinner
+        margin="1.5rem"
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.100"
+        color="pink.500"
+        size="xl"
+      />
+    </Stack>
+  ) : (
     <Stack
       // w="full"
       h="full"
@@ -14,24 +39,30 @@ const ChartColumn = () => {
       <Text textStyle="cardHeader" color="gray.500">
         Last month expenses
       </Text>
-      <Stack w="full" h="auto" layerStyle="card" direction="column" alignItems="center">
+      <Stack
+        w="full"
+        h="auto"
+        layerStyle="card"
+        direction="column"
+        alignItems="center"
+      >
         <Stack w="130%" h="130%" margin="-64px">
-          <AspectRatio maxW="100%" ratio={1} >
-            <PieChart data={expendingData.filter((e) => e.value != 0)} />
+          <AspectRatio maxW="100%" ratio={1}>
+            <PieChart data={data?.data.map((e, i) => ({ ...e, id: i }))} />
           </AspectRatio>
         </Stack>
         {/* <AspectRatio
-          maxW="560px"
-          ratio={1}
-          margin="1rem"
-          rounded="full"
-          background="gray.200"
-        >
-          <div>Gráfico</div>
-        </AspectRatio> */}
+            maxW="560px"
+            ratio={1}
+            margin="1rem"
+            rounded="full"
+            background="gray.200"
+          >
+            <div>Gráfico</div>
+          </AspectRatio> */}
         <Stack w="full" h="full" direction="column" spacing="0">
-          {expendingData
-            .filter((e) => e.value != 0)
+          {data?.data
+            // .filter((e) => e.value != 0)
             .map((exp, i) => (
               <Stack
                 key={i}

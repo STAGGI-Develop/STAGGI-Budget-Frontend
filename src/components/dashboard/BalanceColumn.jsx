@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Icon, Spinner, Square, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { apiTransaction } from "../../utils/apiCalls";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import TransactionsTable from "../TransactionsTable";
 import CreateTransactionModal from "../modals/CreateTransactionModal";
+import WalletIcon from "../../assets/icons/wallet";
 
 const BalanceCard2 = ({balance = -550}) => (
   <Stack layerStyle="card" direction="row">
@@ -38,12 +39,37 @@ const BalanceCard2 = ({balance = -550}) => (
       align="flex-end"
       flex="1"
     >
-      <Stack
+      {/* <Stack
+        w="3rem"
+        h="3rem"
+        justify="center"
+        align="center"
+        spacing="0"
+        padding="0"
+      >
+        <Icon
+          w="full"
+          h="full"
+          as={WalletIcon}
+          stroke={ (balance == 0) ? "black" : (balance < 0) ? "red.500" : "green.400"}
+        />
+      </Stack> */}
+      <Square w="3rem" h="3rem">
+        <Box
+          w="full"
+          h="full"
+          bgImage={ (balance >= 0) ? "url('src/assets/wallet-green.svg')" : "url('src/assets/wallet-red.svg')"}
+          bgSize="contain"
+          bgPosition="center"
+          bgRepeat="no-repeat"
+        />
+      </Square>
+      {/* <Stack
         width="48px"
         height="48px"
         background = { (balance == 0) ? "black" : (balance < 0) ? "red.500" : "green.400"}
       >
-      </Stack>
+      </Stack> */}
     </Stack>
   </Stack>
 );
@@ -143,6 +169,13 @@ const BalanceCard = () => (
 );
 
 const BalanceColumn = () => {
+  
+  const queryClient = useQueryClient();
+  let profile = queryClient.getQueryData(["profile"])?.data;
+  let balance = profile?.balance;
+  let lastTransactions = profile?.transactions;
+  console.log(balance)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isLoading: loadingTransactions,
@@ -167,18 +200,19 @@ const BalanceColumn = () => {
           Total balance
         </Text>
 
-        <BalanceCard2 />
+        <BalanceCard2 balance={balance}/>
       </Stack>
       
       <Button
+        marginTop=".5rem"
         w="40%"
         size="sm"
         alignSelf="center"
         colorScheme="blue"
-        variant="solid"
+        variant="outline"
         onClick={onOpen}
       >
-        New Goal
+        New Transaction
       </Button>
       <CreateTransactionModal isOpen={isOpen} closeModal={onClose}/>
 
@@ -188,7 +222,7 @@ const BalanceColumn = () => {
        --
        */}
       <Stack h="full">
-        <Text marginTop="1rem" textStyle="cardHeader" color="gray.500">
+        <Text marginTop=".5rem" textStyle="cardHeader" color="gray.500">
           Last transactions
         </Text>
         {loadingTransactions ? (
@@ -212,7 +246,7 @@ const BalanceColumn = () => {
         ) : (
           transactions && (
             <Stack w="full" h="auto" layerStyle="card">
-              <TransactionsTable transactions={transactions?.data} />
+              <TransactionsTable transactions={lastTransactions} />
             </Stack>
           )
         )}

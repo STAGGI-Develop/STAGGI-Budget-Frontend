@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-let token = ''
+let token = import.meta.env.VITE_TOKEN
 
 const api = axios.create({
   baseURL: API_URL,
@@ -50,7 +50,7 @@ export const apiUser = {
       .then(response => (token = response.data)),
   register: data => api.post('/user/register', data),
   logout: () => (token = ''),
-  getProfile: () => api.get('/user/profile'),
+  getProfile: () => api.get('/user'),
   updateProfile: data => api.patch('/user/profile', data),
   subscribe: data => api.post('/user/subscribe', data),
   unsubscribe: () => api.post('/user/unsubscribe'),

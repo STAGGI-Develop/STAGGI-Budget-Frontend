@@ -1,7 +1,19 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar";
+import { apiUser } from "../../utils/apiCalls";
+import { useQuery } from "@tanstack/react-query";
 
 const Layout = () => {
+  const {
+    isLoading,
+    data,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["profile"],
+    queryFn: apiUser.getProfile,
+  });
+
   return (
     <div
       style={{

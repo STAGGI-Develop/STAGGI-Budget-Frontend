@@ -19,7 +19,7 @@ import {
 
 import { useState } from 'react'
 import { apiCategory, apiTransaction } from '../../utils/apiCalls'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useInput } from '../../hooks'
 
 const CreateTransactionModal = ({ isOpen, closeModal }) => {
@@ -42,6 +42,8 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
     }
   */
 
+  const queryClient = useQueryClient();
+
   const {
     isLoading,
     data: categories,
@@ -58,6 +60,7 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
       setAmount(0)
       setCategory(null)
       closeModal()
+      queryClient.invalidateQueries("transactions")
     },
     onError: error => {
       console.log(error.message)

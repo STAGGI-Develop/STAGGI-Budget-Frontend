@@ -12,9 +12,9 @@ import React from "react";
 const TransactionsTable = ({ transactions }) => {
   const CustomRow = ({ tr }) => (
     <Tr>
-      <Td>{tr.Type}</Td>
-      <Td>{tr.Description}</Td>
-      <Td isNumeric>{`$${tr.Amount}`}</Td>
+      <Td>{tr.type}</Td>
+      <Td>{tr.title}</Td>
+      <Td isNumeric>{`$${tr.amount}`}</Td>
     </Tr>
   );
   return (
@@ -22,7 +22,7 @@ const TransactionsTable = ({ transactions }) => {
       <Table size="md">
         <Thead background="gray.100">
           <Tr>
-            <Th>Icon</Th>
+            <Th>Type</Th>
             <Th>Description</Th>
             <Th isNumeric>Amount</Th>
           </Tr>
