@@ -1,13 +1,15 @@
 import ContentLayout from "../components/layouts/ContentLayout";
-import { Button, Icon, Spinner, Stack, Text, Tooltip } from "@chakra-ui/react";
+import { Button, Icon, Spinner, Stack, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { apiSaving } from "../utils/apiCalls";
 import { Link, useParams } from "react-router-dom";
 import CustomList from "../components/CustomList";
 import LoadingCard from "../components/LoadingCard";
 import TransactionsTable from "../components/TransactionsTable";
+import CreateGoalModal from "../components/modals/CreateGoalModal";
 
 const LeftContent = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   // const cachedData = queryClient.getQueryData('myQueryKey');
 
   const {
@@ -43,9 +45,11 @@ const LeftContent = () => {
             alignSelf="center"
             colorScheme="blue"
             variant="solid"
+            onClick={onOpen}
           >
             New Goal
           </Button>
+          <CreateGoalModal isOpen={isOpen} closeModal={onClose}/>
         </Stack>
       )}
     </Stack>

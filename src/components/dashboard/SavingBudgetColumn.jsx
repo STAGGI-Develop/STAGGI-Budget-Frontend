@@ -9,12 +9,17 @@ import {
   Box,
   CircularProgress,
   CircularProgressLabel,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiSaving, apiBudget } from "../../utils/apiCalls";
+import CreateGoalModal from "../modals/CreateGoalModal";
+import CreateBudgetModal from "../modals/CreateBudgetModal";
 
 const SavingsBudgetsColumn = () => {
-
+  const { isOpen: isSavingOpen, onOpen: onSavingOpen, onClose: onSavingClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  
   const {
     isLoading: loadingSavings,
     data: savings,
@@ -84,12 +89,15 @@ const SavingsBudgetsColumn = () => {
               alignSelf="center"
               colorScheme="blue"
               variant="solid"
+              onClick={onSavingOpen}
             >
               New Goal
             </Button>
+            <CreateGoalModal isOpen={isSavingOpen} closeModal={onSavingClose}/>
           </Stack>
         )}
       </Stack>
+      
       <Stack id="Budgets container" maxH="50%">
         <Text marginTop="1rem" textStyle="cardHeader" color="gray.500">
           Budgets
@@ -131,9 +139,11 @@ const SavingsBudgetsColumn = () => {
               alignSelf="center"
               colorScheme="blue"
               variant="solid"
+              onClick={onOpen}
             >
               New Budget
             </Button>
+            <CreateBudgetModal isOpen={isOpen} closeModal={onClose}/>
           </Stack>
         )}
       </Stack>
