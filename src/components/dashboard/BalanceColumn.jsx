@@ -1,8 +1,9 @@
 import React from "react";
-import { Spinner, Stack, Text } from "@chakra-ui/react";
+import { Button, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { apiTransaction } from "../../utils/apiCalls";
 import { useQuery } from "@tanstack/react-query";
 import TransactionsTable from "../TransactionsTable";
+import CreateTransactionModal from "../modals/CreateTransactionModal";
 
 const BalanceCard2 = ({balance = -550}) => (
   <Stack layerStyle="card" direction="row">
@@ -142,6 +143,7 @@ const BalanceCard = () => (
 );
 
 const BalanceColumn = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const {
     isLoading: loadingTransactions,
     data: transactions,
@@ -167,6 +169,18 @@ const BalanceColumn = () => {
 
         <BalanceCard2 />
       </Stack>
+      
+      <Button
+        w="40%"
+        size="sm"
+        alignSelf="center"
+        colorScheme="blue"
+        variant="solid"
+        onClick={onOpen}
+      >
+        New Goal
+      </Button>
+      <CreateTransactionModal isOpen={isOpen} closeModal={onClose}/>
 
       {/*
       --
