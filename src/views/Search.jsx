@@ -76,9 +76,9 @@ const leftContent = ({
             value={type}
             onChange={e => setType(e.target.value)}
           >
-            <option value='all'>all</option>
-            <option value='in'>income</option>
-            <option value='out'>outcome</option>
+            <option value={null}>all</option>
+            <option value={1}>income</option>
+            <option value={0}>outcome</option>
           </Select>
         </FormControl>
       </Stack>
@@ -128,7 +128,7 @@ const rightContent = ({ transactions, isLoading }) => {
 
 const Search = () => {
   const { reset, touched, ...searchValue } = useInput('text')
-  const [type, setType] = useState('all')
+  const [type, setType] = useState(null)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [query, setQuery] = useState('')
@@ -140,10 +140,10 @@ const Search = () => {
 
   useEffect(() => {
     const searchFilters = {}
-    searchValue.value && (searchFilters.title = searchValue.value)
-    searchFilters.type = type
-    startDate && (searchFilters.start = new Date(startDate).toISOString())
-    endDate && (searchFilters.end = new Date(endDate).toISOString())
+    searchValue.value && (searchFilters.keyword = searchValue.value)
+    type && (searchFilters.type = type)
+    startDate && (searchFilters.fromDate = new Date(startDate).toISOString())
+    endDate && (searchFilters.toDate = new Date(endDate).toISOString())
 
     const result = Object.entries(searchFilters)
       .map(subArr => subArr.join('='))

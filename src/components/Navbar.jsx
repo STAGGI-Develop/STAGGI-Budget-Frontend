@@ -77,15 +77,13 @@ const Navbar = () => {
     { to: "/dashboard", title: "Dashboard", icon: HomeIcon },
     { to: "/goal", title: "Goals", icon: FlagIcon },
     { to: "/budget", title: "Budgets", icon: ChartIcon },
-    { to: "/search", title: "Details", icon: SearchIcon },
-    { to: "/test", title: "Test", icon: null },
+    { to: "/search", title: "Details", icon: SearchIcon }
   ];
   const tabsIndex = {
     dashboard: 0,
     goal: 1,
     budget: 2,
-    search: 3,
-    test: 4,
+    search: 3
   };
 
   const [stateIndex, setStateIndex] = useState(null);

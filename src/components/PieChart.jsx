@@ -44,7 +44,7 @@ const MyResponsivePie = ({data}) => (
     // colors={{ scheme: "pastel1" }}
     // colors={{ scheme: 'pink_yellowGreen' }}
     // colors={{ scheme: 'purple_blue' }}
-    colors={{ scheme: "blues" }}
+    colors={{ scheme: "pastel2" }}
     borderWidth={1}
     borderColor={{
       from: "color",

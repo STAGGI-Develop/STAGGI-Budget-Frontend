@@ -17,15 +17,17 @@ import {
 } from '@chakra-ui/react'
 
 import { useState } from 'react'
-import { apiCategory, apiSaving } from '../../utils/apiCalls'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { apiCategory, apiBudget } from '../../utils/apiCalls'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const CreateBudgetModal = ({ isOpen, closeModal }) => {
-  const periods = ['week', 'month']
+  const periods = [0, 1, 2]
 
   const [limitAmount, setLimitAmount] = useState(0)
   const [category, setCategory] = useState(null)
   const [period, setPeriod] = useState(periods[0])
+
+  const queryClient = useQueryClient();
 
   const {
     isLoading,
@@ -37,11 +39,12 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
     queryFn: apiCategory.getAll,
   })
 
-  const mutation = useMutation(apiSaving.create, {
+  const mutation = useMutation(apiBudget.create, {
     onSuccess: () => {
       setLimitAmount(0)
       setCategory(null)
       closeModal()
+      queryClient.invalidateQueries("budgets")
     },
     onError: error => {
       console.log(error.message)
@@ -52,9 +55,9 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
     if (!isFormValid) return
 
     mutation.mutate({
-      Category: category,
-      Period: period,
-      LimitAmount: +limitAmount,
+      category: category,
+      period: period,
+      limitAmount: +limitAmount,
     })
   }
 

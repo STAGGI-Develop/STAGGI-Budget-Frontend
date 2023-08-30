@@ -77,11 +77,17 @@ const SavingsBudgetsColumn = () => {
             h="auto"
             direction="column"
             layerStyle="card"
-            spacing="0rem"
           >
-            {savings.data.map((saving, i) => (
-              <SavingCard key={i} item={saving} />
-            ))}
+            <Stack
+              padding={0}
+              maxHeight="14rem"
+              overflowY="auto"
+              spacing="0rem"
+            >
+              {savings.data.map((saving, i) => (
+                <SavingCard key={i} item={saving} />
+              ))}
+            </Stack>
             <Button
               w="40%"
               size="sm"
@@ -129,9 +135,16 @@ const SavingsBudgetsColumn = () => {
             layerStyle="card"
             spacing="0rem"
           >
-            {budgets.data.map((budget, i) => (
-              <BudgetCard key={i} item={budget} />
-            ))}
+            <Stack
+              padding={0}
+              maxHeight="14rem"
+              overflowY="auto"
+              spacing="0rem"
+            >
+              {budgets.data.map((budget, i) => (
+                <BudgetCard key={i} item={budget} />
+              ))}
+            </Stack>
             <Button
               w="40%"
               size="sm"
@@ -154,7 +167,7 @@ const SavingsBudgetsColumn = () => {
 export default SavingsBudgetsColumn;
 
 const SavingCard = ({ item }) => {
-  let progress = Math.ceil((item.Balance * 100) / item.TargetAmount);
+  let progress = Math.ceil((item.balance * 100) / item.targetAmount);
   return (
     <Stack
       padding=".5rem"
@@ -163,7 +176,7 @@ const SavingCard = ({ item }) => {
       spacing="0rem"
       overflow="hidden"
       width="full"
-      height="4.5rem"
+      minHeight="4.5rem"
       borderBottom="1px"
       borderColor="gray.200"
       // maxWidth="100%"
@@ -186,7 +199,7 @@ const SavingCard = ({ item }) => {
             flex="1"
             _hover={{ color: "blue.600" }}
           >
-            {item.Name}
+            {item.name}
           </Text>
         </Stack>
         <Stack
@@ -196,9 +209,9 @@ const SavingCard = ({ item }) => {
           spacing=".25rem"
         >
           <Text color="blue.600" fontWeight="bold">
-            {`$${item.Balance} /`}
+            {`$${item.balance} /`}
           </Text>
-          <Text color="gray.500">${item.TargetAmount}</Text>
+          <Text color="gray.500">${item.targetAmount}</Text>
         </Stack>
       </Stack>
       {/* Progress */}
@@ -239,11 +252,11 @@ const SavingCard = ({ item }) => {
 };
 
 const BudgetCard = ({ item }) => {
-  let progress = Math.ceil((item.Balance * 100) / item.LimitAmount);
+  let progress = Math.ceil((item.balance * 100) / item.limitAmount);
   return (
     <Stack
       width="full"
-      height="4.5rem"
+      minHeight="4.5rem"
       paddingX=".5rem"
       paddingY=".75rem"
       justify="center"
@@ -258,7 +271,7 @@ const BudgetCard = ({ item }) => {
       cursor="default"
       _hover={{ bg: "gray.100" }}
     >
-      <Square w="3rem" h="full" padding="3%" rounded="lg" background="pink.100">
+      <Square w="3rem" h="3rem" padding="3%" rounded="lg" background="pink.100">
         <Box
           w="full"
           h="full"
@@ -287,7 +300,7 @@ const BudgetCard = ({ item }) => {
             flex="1"
             _hover={{ color: "blue.600" }}
           >
-            {item.Category}
+            {item.category.name}
           </Text>
         </Stack>
         <Stack
@@ -297,9 +310,9 @@ const BudgetCard = ({ item }) => {
           spacing=".25rem"
         >
           <Text color="blue.600" fontWeight="semibold">
-            {`$${item.Balance} /`}
+            {`$${item.balance} /`}
           </Text>
-          <Text color="gray.500">${item.LimitAmount}</Text>
+          <Text color="gray.500">${item.limitAmount}</Text>
         </Stack>
       </Stack>
 

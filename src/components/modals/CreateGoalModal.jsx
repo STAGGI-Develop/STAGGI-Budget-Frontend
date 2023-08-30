@@ -18,16 +18,19 @@ import { useInput } from '../../hooks'
 
 import { useState } from 'react'
 import { apiSaving } from '../../utils/apiCalls'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const CreateGoalModal = ({ isOpen, closeModal }) => {
   const { reset, touched: touchedName, ...name } = useInput('text')
   const [targetAmount, setTargetAmount] = useState('')
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation(apiSaving.create, {
     onSuccess: () => {
       reset()
       closeModal()
+      queryClient.invalidateQueries("savings")
     },
     onError: error => {
       console.log(error.message)

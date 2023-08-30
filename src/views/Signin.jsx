@@ -40,6 +40,7 @@ export const Signin = () => {
   const handleSubmit = e => {
     e.preventDefault()
     mutation.mutate({ email: email.value, password: password.value })
+    console.log(email)
   }
 
   const isFormValid = email.value !== '' && password.value !== ''

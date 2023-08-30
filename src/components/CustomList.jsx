@@ -24,7 +24,7 @@ const CustomList = ({ list, listType }) => {
           fontSize="1rem"
           _hover={{ color: "blue.600" }}
         >
-          {item.Name ? item.Name : item.Category}
+          {item.name ? item.name : item.category.name}
         </Text>
       </Stack>
       <Stack w="fit-content" direction="row" justify="flex-end" spacing="1rem">
@@ -36,10 +36,10 @@ const CustomList = ({ list, listType }) => {
           align="center"
         >
           <Text color="blue.600" fontWeight="bold">
-            {`$${item.Balance} /`}
+            {`$${item.balance} /`}
           </Text>
           <Text color="gray.500">
-            ${item.TargetAmount ? item.TargetAmount : item.LimitAmount}
+            ${item.targetAmount ? item.targetAmount : item.limitAmount}
           </Text>
         </Stack>
         <Stack direction="row" align="center" spacing="0">

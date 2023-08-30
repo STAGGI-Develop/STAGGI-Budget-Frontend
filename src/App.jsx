@@ -22,7 +22,6 @@ function App() {
             <Route path='/budget/:id' element={<Budget />} />
             <Route path='/search' element={<Search />} />
             <Route path='/settings' element={<Settings />} />
-            <Route path="/test" element={<Test />} />
           </Route>
           <Route>
             <Route path='/signin' element={<Signin />} />
