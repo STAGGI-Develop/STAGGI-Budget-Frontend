@@ -68,7 +68,7 @@ const Signup = () => {
       resetLastName()
       resetEmail()
       resetPassword()
-      navigate('/signin')
+      navigate('/dashboard')
     },
     onError: error => console.log(error.message),
   })

@@ -7,12 +7,14 @@ import Search from './views/Search'
 import Settings from './views/Settings'
 import Signin from './views/Signin'
 import Signup from './views/Signup'
-import Test from "./views/Test";
+import RequireAuth from './components/auth/RequireAuth'
 
 function App() {
   return (
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        {/* Protected */}
+        <Route element={<RequireAuth />}>
           <Route element={<Layout />}>
             <Route index element={<Navigate to='/dashboard' />} />
             <Route path='/dashboard' element={<Home />} />
@@ -23,13 +25,16 @@ function App() {
             <Route path='/search' element={<Search />} />
             <Route path='/settings' element={<Settings />} />
           </Route>
-          <Route>
-            <Route path='/signin' element={<Signin />} />
-            <Route path='/signup' element={<Signup />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-  );
+        </Route>
+
+        {/* Public */}
+        <Route>
+          <Route path='/signin' element={<Signin />} />
+          <Route path='/signup' element={<Signup />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
