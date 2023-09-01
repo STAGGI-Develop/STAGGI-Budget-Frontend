@@ -10,10 +10,11 @@ import {
 import React from "react";
 
 const TransactionsTable = ({ transactions }) => {
+  console.log(transactions)
   const CustomRow = ({ tr }) => (
     <Tr>
       <Td>{tr.type}</Td>
-      <Td>{tr.title}</Td>
+      <Td>{tr.description}</Td>
       <Td isNumeric>{`$${tr.amount}`}</Td>
     </Tr>
   );
@@ -28,7 +29,7 @@ const TransactionsTable = ({ transactions }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {transactions?.slice(0, 6).map((e, i) => (
+          {transactions?.map((e, i) => (
             <CustomRow tr={e} key={i} />
           ))}
         </Tbody>

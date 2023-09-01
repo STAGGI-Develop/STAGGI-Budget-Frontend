@@ -23,13 +23,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useInput } from '../../hooks'
 
 const CreateTransactionModal = ({ isOpen, closeModal }) => {
-  const types = ['out', 'in']
+  const types = [1, 2]
 
   const { reset, touched, ...description } = useInput('text')
   const [category, setCategory] = useState(null)
 
   const [amount, setAmount] = useState(0)
-  const [type, setType] = useState('out')
+  const [type, setType] = useState(2)
 
   /*
     {
@@ -61,6 +61,8 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
       setCategory(null)
       closeModal()
       queryClient.invalidateQueries("transactions")
+      queryClient.invalidateQueries("profile")
+      console.log("OK___")
     },
     onError: error => {
       console.log(error.message)
@@ -70,11 +72,17 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
   const handleSave = () => {
     if (!isFormValid) return
 
-    mutation.mutate({
-      id: 99,
-      Description: description,
+    console.log({
+      Description: description.value,
       Type: type,
-      Amount: type === 'out' ? +amount * -1 : +amount,
+      Amount: type === 2 ? +amount * -1 : +amount,
+      Category: category,
+    })
+
+    mutation.mutate({
+      Description: description.value,
+      Type: type,
+      Amount: type === 2 ? +amount * -1 : +amount,
       Category: category,
     })
   }
@@ -189,7 +197,7 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
               >
                 {types.map(type => (
                   <option key={type} value={type}>
-                    {type}
+                    {type == 1 ? "Income" :"Expense"}
                   </option>
                 ))}
               </Select>
