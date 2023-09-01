@@ -6,8 +6,7 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/react";
-import React from "react";
+} from '@chakra-ui/react'
 
 const TransactionsTable = ({ transactions }) => {
   console.log(transactions)
@@ -17,11 +16,11 @@ const TransactionsTable = ({ transactions }) => {
       <Td>{tr.description}</Td>
       <Td isNumeric>{`$${tr.amount}`}</Td>
     </Tr>
-  );
+  )
   return (
     <TableContainer>
-      <Table size="md">
-        <Thead background="gray.100">
+      <Table size='md'>
+        <Thead background='gray.100'>
           <Tr>
             <Th>Type</Th>
             <Th>Description</Th>
@@ -35,7 +34,7 @@ const TransactionsTable = ({ transactions }) => {
         </Tbody>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}
 
-export default TransactionsTable;
+export default TransactionsTable
