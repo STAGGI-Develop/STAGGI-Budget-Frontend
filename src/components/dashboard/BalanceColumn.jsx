@@ -184,7 +184,7 @@ const BalanceColumn = () => {
     error: errorTransactions,
   } = useQuery({
     queryKey: ["transactions"],
-    queryFn: apiTransaction.getAll,
+    queryFn: apiTransaction.getLast,
   });
   return (
     <Stack
@@ -246,7 +246,7 @@ const BalanceColumn = () => {
         ) : (
           transactions && (
             <Stack w="full" h="auto" layerStyle="card">
-              <TransactionsTable transactions={lastTransactions} />
+              <TransactionsTable transactions={transactions.data} />
             </Stack>
           )
         )}

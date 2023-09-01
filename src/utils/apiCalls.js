@@ -64,6 +64,7 @@ export const apiSaving = {
 
 export const apiTransaction = {
   getAll: () => api.get('/transactions', { headers: { Authorization: token } }),
+  getLast: () => api.get('/transactions/transaction/last', { headers: { Authorization: token } }),
   getFiltered: query =>
     api.get(`/transactions?${query}`, { headers: { Authorization: token } }),
   getById: id =>
@@ -84,7 +85,7 @@ export const apiUser = {
       .post('/auth/login', { email, password })
       .then(response => setToken(response.data)),
   register: data =>
-    api.post('/user/register', data).then(response => setToken(response.data)),
+    api.post('/user', data).then(response => setToken(response.data)),
   logout: deleteToken,
   getProfile: () => api.get('/user', { headers: { Authorization: token } }),
   updateProfile: data =>
