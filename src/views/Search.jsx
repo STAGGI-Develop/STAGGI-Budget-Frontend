@@ -9,6 +9,7 @@ import {
   Select,
   Spinner,
   Text,
+  Button,
 } from '@chakra-ui/react'
 import { apiTransaction } from '../utils/apiCalls'
 import { useQuery } from '@tanstack/react-query'
@@ -23,13 +24,14 @@ const leftContent = ({
   setStartDate,
   endDate,
   setEndDate,
+  search,
 }) => {
   return (
     <Stack display='grid' justifyContent='center' w='100%'>
-      <Text my='1rem' textStyle='cardHeader' color='gray.500'>
+      <Text textStyle='cardHeader' color='gray.500'>
         Filter transactions
       </Text>
-      <Stack display='grid' gap='1.75rem'>
+      <Stack display='grid' gap='1.75rem' layerStyle='card' spacing='.7rem'>
         <FormControl>
           <FormLabel>Description</FormLabel>
           <Input
@@ -81,6 +83,15 @@ const leftContent = ({
             <option value={0}>outcome</option>
           </Select>
         </FormControl>
+        <Button
+          type='submit'
+          size='md'
+          width='100%'
+          colorScheme='blue'
+          onClick={search}
+        >
+          Search
+        </Button>
       </Stack>
     </Stack>
   )
@@ -95,7 +106,7 @@ const rightContent = ({ transactions, isLoading }) => {
         direction='column'
         layerStyle='card'
         spacing='0rem'
-        align='center'
+        // align='center'
       >
         <Text my='1rem' textStyle='cardHeader' color='gray.500'>
           Transactions
@@ -112,33 +123,39 @@ const rightContent = ({ transactions, isLoading }) => {
     )
   }
   return (
-    <Stack display='grid' justifyContent='center' w='100%'>
+    <Stack display='grid' w='full'>
       <Stack>
-        <Text my='1rem' textStyle='cardHeader' color='gray.500'>
+        <Text textStyle='cardHeader' color='gray.500'>
           Transactions
         </Text>
       </Stack>
-      <TransactionsTable
-        item={transactions.data}
-        size={{ base: 'md', xl: 'lg' }}
-      />
+      <Stack w='full' layerStyle='card'>
+        <TransactionsTable transactions={transactions.data} />
+      </Stack>
     </Stack>
   )
 }
 
 const Search = () => {
   const { reset, touched, ...searchValue } = useInput('text')
-  const [type, setType] = useState(null)
+  const [type, setType] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [query, setQuery] = useState('')
 
-  const { data: transactions, isLoading } = useQuery({
+  console.log({ query })
+
+  const {
+    data: transactions,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['transactions'],
     queryFn: () => apiTransaction.getFiltered(query),
+    enabled: false,
   })
 
-  useEffect(() => {
+  const search = () => {
     const searchFilters = {}
     searchValue.value && (searchFilters.keyword = searchValue.value)
     type && (searchFilters.type = type)
@@ -149,11 +166,13 @@ const Search = () => {
       .map(subArr => subArr.join('='))
       .join('&')
 
-    console.log(result)
     setQuery(result)
-  }, [searchValue.value, type, startDate, endDate])
+  }
 
-  console.log(query)
+  useEffect(() => {
+    refetch()
+    console.log('useEffect')
+  }, [refetch, query])
 
   return (
     <>
@@ -167,6 +186,7 @@ const Search = () => {
           setStartDate,
           endDate,
           setEndDate,
+          search,
         }}
         rightContent={rightContent}
         rightContentProps={{ transactions, isLoading }}
