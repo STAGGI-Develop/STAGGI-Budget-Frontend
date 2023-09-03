@@ -25,7 +25,7 @@ import { useInput } from '../../hooks'
 const CreateTransactionModal = ({ isOpen, closeModal }) => {
   const types = [1, 2]
 
-  const { reset, touched, ...description } = useInput('text')
+  const { reset, touched, setValue, ...description } = useInput('text')
   const [category, setCategory] = useState(null)
 
   const [amount, setAmount] = useState(0)
@@ -42,7 +42,7 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
     }
   */
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const {
     isLoading,
@@ -60,9 +60,9 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
       setAmount(0)
       setCategory(null)
       closeModal()
-      queryClient.invalidateQueries("transactions")
-      queryClient.invalidateQueries("profile")
-      console.log("OK___")
+      queryClient.invalidateQueries('transactions')
+      queryClient.invalidateQueries('profile')
+      console.log('OK___')
     },
     onError: error => {
       console.log(error.message)
@@ -197,7 +197,7 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
               >
                 {types.map(type => (
                   <option key={type} value={type}>
-                    {type == 1 ? "Income" :"Expense"}
+                    {type == 1 ? 'Income' : 'Expense'}
                   </option>
                 ))}
               </Select>

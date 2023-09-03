@@ -20,11 +20,13 @@ export const Signin = () => {
   const {
     reset: resetEmail,
     touched: touchedEmail,
+    setValue: setEmailValue,
     ...email
   } = useInput('text')
   const {
     reset: resetPassword,
     touched: touchedPassword,
+    setValue: setPasswordValue,
     ...password
   } = useInput('password')
 

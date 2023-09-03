@@ -21,21 +21,25 @@ const Signup = () => {
   const {
     reset: resetFirstName,
     touched: touchedFirstName,
+    setValue: setFirstNameValue,
     ...firstName
   } = useInput('text')
   const {
     reset: resetLastName,
     touched: touchedLastName,
+    setValue: setLastNameValue,
     ...lastName
   } = useInput('text')
   const {
     reset: resetEmail,
     touched: touchedEmail,
+    setValue: setEmailValue,
     ...email
   } = useInput('text')
   const {
     reset: resetPassword,
     touched: touchedPassword,
+    setValue: setPasswordValue,
     ...password
   } = useInput('password')
 

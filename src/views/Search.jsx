@@ -137,7 +137,7 @@ const rightContent = ({ transactions, isLoading }) => {
 }
 
 const Search = () => {
-  const { reset, touched, ...searchValue } = useInput('text')
+  const { reset, touched, setValue, ...searchValue } = useInput('text')
   const [type, setType] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
