@@ -16,34 +16,80 @@ import {
 } from '@chakra-ui/react'
 import { useInput } from '../../hooks'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiSaving } from '../../utils/apiCalls'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-const CreateGoalModal = ({ isOpen, closeModal }) => {
-  const { reset, touched: touchedName, ...name } = useInput('text')
+const CreateGoalModal = ({ isOpen, closeModal, selectedGoal }) => {
+  const {
+    reset,
+    touched: touchedName,
+    setValue: setNameValue,
+    ...name
+  } = useInput('text')
   const [targetAmount, setTargetAmount] = useState('')
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-  const mutation = useMutation(apiSaving.create, {
+  const createMutation = useMutation(apiSaving.create, {
     onSuccess: () => {
       reset()
       closeModal()
-      queryClient.invalidateQueries("savings")
+      queryClient.invalidateQueries('savings')
     },
     onError: error => {
       console.log(error.message)
     },
   })
 
+  const updateMutation = useMutation(apiSaving.update, {
+    onSuccess: () => {
+      reset()
+      closeModal()
+      queryClient.invalidateQueries('savings')
+      queryClient.setQueryData(['savings', { id: selectedGoal.id }], {
+        name: name.value,
+        selectedGoal: +selectedGoal,
+      })
+    },
+    onError: error => {
+      console.log(error.message)
+    },
+  })
+
+  useEffect(() => {
+    if (selectedGoal) {
+      setNameValue(selectedGoal?.name)
+      setTargetAmount(selectedGoal?.targetAmount?.toString())
+    } else {
+      setNameValue('')
+      setTargetAmount('')
+    }
+  }, [selectedGoal, setNameValue])
+
   const handleSave = () => {
     if (!isFormValid) return
 
-    mutation.mutate({ Name: name.value, TargetAmount: +targetAmount })
+    console.log(selectedGoal)
+    console.log({
+      Name: name.value,
+      TargetAmount: +targetAmount,
+    })
+
+    if (!selectedGoal) {
+      createMutation.mutate({ Name: name.value, TargetAmount: +targetAmount })
+    } else {
+      updateMutation.mutate({
+        id: selectedGoal?.id,
+        data: {
+          Name: name.value,
+          TargetAmount: +targetAmount,
+        },
+      })
+    }
   }
 
-  const isFormValid = name.value.trim() !== '' && targetAmount > 0
+  const isFormValid = name?.value?.trim() !== '' && targetAmount > 0
 
   return (
     <Modal isOpen={isOpen} onClose={closeModal}>
@@ -71,6 +117,7 @@ const CreateGoalModal = ({ isOpen, closeModal }) => {
             <FormLabel>Target amount</FormLabel>
             <NumberInput
               onChange={value => setTargetAmount(value)}
+              value={targetAmount}
               _before={{
                 content: "'$'",
                 position: 'absolute',
@@ -92,7 +139,7 @@ const CreateGoalModal = ({ isOpen, closeModal }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter display='grid' justifyContent='center'>
-          {mutation.isLoading ? (
+          {createMutation.isLoading ? (
             <Button colorScheme='blue' mr={3} minW='120px'>
               <Spinner speed='600ms' thickness='3px' color='white' />
             </Button>
