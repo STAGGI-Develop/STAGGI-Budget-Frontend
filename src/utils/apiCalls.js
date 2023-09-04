@@ -74,8 +74,10 @@ export const apiTransaction = {
     api.get(`/transactions?${query}`, { headers: { Authorization: token } }),
   getById: id =>
     api.get(`/transactions/${id}`, { headers: { Authorization: token } }),
-  create: data =>
-    api.post('/transactions', data, { headers: { Authorization: token } }),
+  create: data => {
+    console.log({ data })
+    api.post('/transactions', data, { headers: { Authorization: token } })
+  },
   update: (id, data) =>
     api.patch(`/transactions/${id}`, data, {
       headers: { Authorization: token },

@@ -15,21 +15,25 @@ import {
   Select,
   Stack,
   Input,
+  Textarea,
 } from '@chakra-ui/react'
 
 import { useState } from 'react'
-import { apiCategory, apiTransaction } from '../../utils/apiCalls'
+import { apiCategory, apiSaving, apiTransaction } from '../../utils/apiCalls'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useInput } from '../../hooks'
 
 const CreateTransactionModal = ({ isOpen, closeModal }) => {
-  const types = [1, 2]
+  const types = ['2', '1']
 
-  const { reset, touched, setValue, ...description } = useInput('text')
+  const { reset, touched, setValue, ...title } = useInput('text')
+  const [notes, setNotes] = useState('')
   const [category, setCategory] = useState(null)
-
   const [amount, setAmount] = useState(0)
-  const [type, setType] = useState(2)
+  const [type, setType] = useState('2')
+  const [saving, setSaving] = useState(null)
+
+  console.log(saving)
 
   /*
     {
@@ -45,13 +49,21 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
   const queryClient = useQueryClient()
 
   const {
-    isLoading,
+    isLoading: loadingCategories,
     data: categories,
-    isError,
-    error,
+    isError: isCategoriesError,
   } = useQuery({
     queryKey: ['categories'],
     queryFn: apiCategory.getAll,
+  })
+
+  const {
+    isLoading: loadingSavings,
+    data: savings,
+    isError: isSavingsError,
+  } = useQuery({
+    queryKey: ['savings'],
+    queryFn: apiSaving.getAll,
   })
 
   const mutation = useMutation(apiTransaction.create, {
@@ -59,10 +71,10 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
       reset()
       setAmount(0)
       setCategory(null)
+      setSaving(null)
       closeModal()
       queryClient.invalidateQueries('transactions')
       queryClient.invalidateQueries('profile')
-      console.log('OK___')
     },
     onError: error => {
       console.log(error.message)
@@ -73,23 +85,27 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
     if (!isFormValid) return
 
     console.log({
-      Description: description.value,
-      Type: type,
-      Amount: type === 2 ? +amount * -1 : +amount,
-      Category: category,
+      Title: title.value,
+      Description: notes || null,
+      Type: +type,
+      Amount: type === '2' ? +amount * -1 : +amount,
+      Category: type === '2' ? category : null,
+      Saving: type === '1' ? saving : null,
     })
 
     mutation.mutate({
-      Description: description.value,
-      Type: type,
-      Amount: type === 2 ? +amount * -1 : +amount,
+      Title: title.value,
+      Description: notes || null,
+      Type: +type,
+      Amount: type === '2' ? +amount * -1 : +amount,
       Category: category,
+      Saving: saving,
     })
   }
 
-  const isFormValid = description !== '' && category && amount > 0 && type
+  const isFormValid = title.value !== '' && category && amount > 0 && type
 
-  if (isLoading) {
+  if (loadingCategories || loadingSavings) {
     return (
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />
@@ -109,8 +125,8 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
     )
   }
 
-  if (isError) {
-    console.log(error)
+  if (isCategoriesError || isSavingsError) {
+    console.log('Something went wrong')
   }
 
   if (category === null) {
@@ -126,9 +142,9 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
         <ModalBody display='grid' gap='2rem'>
           <Stack flexDirection='row' gap='2rem'>
             <FormControl isRequired={true}>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Title</FormLabel>
               <Input
-                {...description}
+                {...title}
                 placeholder='Vacation'
                 borderWidth={0}
                 borderRadius={0}
@@ -139,6 +155,40 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
                 _empty={{ borderColor: 'pink.500' }}
                 _hover={{ borderColor: 'gray.200' }}
               />
+            </FormControl>
+            <FormControl isRequired={false}>
+              <FormLabel>Notes (optional)</FormLabel>
+              <Input
+                value={notes}
+                onChange={e => setNotes(e.target.value)}
+                placeholder='Two week travel to Canada'
+                borderWidth={0}
+                borderRadius={0}
+                borderBottomWidth='3px'
+                boxShadow='none'
+                px={0}
+                _focusVisible={{ borderWidth: 0, borderBottomWidth: '3px' }}
+                _empty={{ borderColor: 'pink.500' }}
+                _hover={{ borderColor: 'gray.200' }}
+              />
+            </FormControl>
+          </Stack>
+          <Stack flexDirection='row' gap='2rem'>
+            <FormControl isRequired={true}>
+              <FormLabel>Type</FormLabel>
+              <Select
+                variant='flushed'
+                borderBottomWidth='3px'
+                borderColor='pink.500'
+                _hover={{ borderColor: 'gray.200' }}
+                onChange={e => setType(e.target.value)}
+              >
+                {types.map(type => (
+                  <option key={type} value={type}>
+                    {type == '1' ? 'Income' : 'Expense'}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
             <FormControl
               isRequired={true}
@@ -169,6 +219,7 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
               </NumberInput>
             </FormControl>
           </Stack>
+
           <Stack flexDirection='row' gap='2rem'>
             <FormControl isRequired={true}>
               <FormLabel>Category</FormLabel>
@@ -179,27 +230,36 @@ const CreateTransactionModal = ({ isOpen, closeModal }) => {
                 _hover={{ borderColor: 'gray.200' }}
                 onChange={e => setCategory(e.target.value)}
               >
-                {categories?.data?.map(category => (
-                  <option key={category?.id} value={category?.name}>
-                    {category?.name}
-                  </option>
-                ))}
+                {categories?.data
+                  ?.filter(c => !c.isDisabled)
+                  .map(category => (
+                    <option key={category?.id} value={category?.name}>
+                      {category?.name?.length > 15
+                        ? category?.name.slice(0, 9).concat('...')
+                        : category?.name}
+                    </option>
+                  ))}
               </Select>
             </FormControl>
-            <FormControl isRequired={true}>
-              <FormLabel>Type</FormLabel>
+            <FormControl isRequired={false}>
+              <FormLabel>Saving</FormLabel>
               <Select
                 variant='flushed'
                 borderBottomWidth='3px'
                 borderColor='pink.500'
                 _hover={{ borderColor: 'gray.200' }}
-                onChange={e => setType(e.target.value)}
+                onChange={e => setSaving(e.target.value)}
+                isDisabled={type !== '1'}
               >
-                {types.map(type => (
-                  <option key={type} value={type}>
-                    {type == 1 ? 'Income' : 'Expense'}
-                  </option>
-                ))}
+                {savings?.data
+                  ?.filter(s => !s.isDisabled)
+                  .map(saving => (
+                    <option key={saving?.id} value={saving?.name}>
+                      {saving?.name?.length > 15
+                        ? saving?.name.slice(0, 9).concat('...')
+                        : saving?.name}
+                    </option>
+                  ))}
               </Select>
             </FormControl>
           </Stack>

@@ -50,16 +50,18 @@ export const Signin = () => {
     <Stack flex={1} direction='row' minH='100vh'>
       {/* Form */}
       <Stack
-        w='50%'
-        paddingX='10rem'
+        w={{ base: '100%', sm: 'fit', lg: '50%' }}
+        display='grid'
+        marginX='auto'
+        paddingX={{ base: '4rem', lg: '10rem' }}
         paddingTop='4rem'
         paddingBottom='2rem'
         // paddingBottom="50px"
-        justify='flex-start'
+        justify='center'
         align='flex-start'
         spacing='40px'
         // overflow="hidden"
-        boxShadow='lg'
+        // boxShadow='lg'
         // background="#F4F5F7"
       >
         {/* <Box width="48px" height="48px" background="blackAlpha.300" /> */}
@@ -223,7 +225,11 @@ export const Signin = () => {
       </Stack>
 
       {/* Info section */}
-      <Stack w='50%' background='staggi-blue.600' />
+      <Stack
+        w={{ base: 0, lg: '50%' }}
+        background='staggi-blue.600'
+        display={{ base: 'none', lg: 'block' }}
+      />
     </Stack>
   )
 }
