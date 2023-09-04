@@ -16,18 +16,22 @@ import {
   Stack,
 } from '@chakra-ui/react'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiCategory, apiBudget } from '../../utils/apiCalls'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-const CreateBudgetModal = ({ isOpen, closeModal }) => {
-  const periods = [0, 1, 2]
+const CreateBudgetModal = ({ isOpen, closeModal, selectedBudget }) => {
+  const periods = [
+    { enum: 0, label: 'Week' },
+    { enum: 1, label: 'Month' },
+    { enum: 2, label: 'Year' },
+  ]
 
   const [limitAmount, setLimitAmount] = useState(0)
   const [category, setCategory] = useState(null)
-  const [period, setPeriod] = useState(periods[0])
+  const [period, setPeriod] = useState('0')
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   const {
     isLoading,
@@ -39,26 +43,72 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
     queryFn: apiCategory.getAll,
   })
 
-  const mutation = useMutation(apiBudget.create, {
+  const createMutation = useMutation(apiBudget.create, {
     onSuccess: () => {
       setLimitAmount(0)
       setCategory(null)
       closeModal()
-      queryClient.invalidateQueries("budgets")
+      queryClient.invalidateQueries('budgets')
     },
     onError: error => {
       console.log(error.message)
     },
   })
 
+  const updateMutation = useMutation(apiBudget.update, {
+    onSuccess: () => {
+      closeModal()
+      queryClient.invalidateQueries('budgets')
+      queryClient.setQueryData(['budgets', { id: selectedBudget.id }], {
+        category,
+        period: +period,
+        limitAmount: +limitAmount,
+      })
+    },
+    onError: error => {
+      console.log(error.message)
+    },
+  })
+
+  useEffect(() => {
+    if (selectedBudget) {
+      setLimitAmount(selectedBudget.limitAmount)
+      setCategory(selectedBudget.category?.name)
+      setPeriod(
+        selectedBudget.period === 'Weekly'
+          ? '0'
+          : selectedBudget.period === 'Monthly'
+          ? '1'
+          : selectedBudget.period === 'Yearly'
+          ? '2'
+          : null
+      )
+    } else {
+      setLimitAmount(0)
+      setCategory(null)
+      setPeriod(0)
+    }
+  }, [selectedBudget])
+
   const handleSave = () => {
     if (!isFormValid) return
 
-    mutation.mutate({
-      category: category,
-      period: period,
-      limitAmount: +limitAmount,
-    })
+    if (!selectedBudget) {
+      createMutation.mutate({
+        category: category,
+        period: period,
+        limitAmount: +limitAmount,
+      })
+    } else {
+      updateMutation.mutate({
+        id: selectedBudget?.id,
+        data: {
+          category: category,
+          period: period,
+          limitAmount: +limitAmount,
+        },
+      })
+    }
   }
 
   const isFormValid = category && period && limitAmount > 0
@@ -107,6 +157,8 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
                 borderColor='pink.500'
                 _hover={{ borderColor: 'gray.200' }}
                 onChange={e => setCategory(e.target.value)}
+                value={category}
+                disabled={!!selectedBudget}
               >
                 {categories?.data?.map(category => (
                   <option key={category?.id} value={category?.name}>
@@ -123,10 +175,11 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
                 borderColor='pink.500'
                 _hover={{ borderColor: 'gray.200' }}
                 onChange={e => setPeriod(e.target.value)}
+                value={period}
               >
                 {periods.map(period => (
-                  <option key={period} value={period}>
-                    {period}
+                  <option key={period.enum} value={period.enum}>
+                    {period.label}
                   </option>
                 ))}
               </Select>
@@ -136,6 +189,7 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
             <FormLabel>Limit amount</FormLabel>
             <NumberInput
               onChange={value => setLimitAmount(value)}
+              value={limitAmount}
               maxW='184px'
               _before={{
                 content: "'$'",
@@ -158,7 +212,7 @@ const CreateBudgetModal = ({ isOpen, closeModal }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter display='grid' justifyContent='center'>
-          {mutation.isLoading ? (
+          {createMutation.isLoading ? (
             <Button colorScheme='blue' mr={3} minW='120px'>
               <Spinner speed='600ms' thickness='3px' color='white' />
             </Button>

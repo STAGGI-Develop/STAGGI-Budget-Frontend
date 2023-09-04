@@ -30,7 +30,7 @@ export const apiBudget = {
     api.get(`/budget/${id}`, { headers: { Authorization: token } }),
   create: data =>
     api.post('/budget', data, { headers: { Authorization: token } }),
-  update: (id, data) =>
+  update: ({ id, data }) =>
     api.patch(`/budget/${id}`, data, { headers: { Authorization: token } }),
   delete: id =>
     api.delete(`/budget/${id}`, { headers: { Authorization: token } }),
@@ -56,21 +56,28 @@ export const apiSaving = {
     api.get(`/saving/${id}`, { headers: { Authorization: token } }),
   create: data =>
     api.post('/saving', data, { headers: { Authorization: token } }),
-  update: (id, data) =>
-    api.patch(`/saving/${id}`, data, { headers: { Authorization: token } }),
+  update: ({ id, data }) => {
+    console.log('axios', id, data)
+    api.patch(`/saving/${id}`, data, { headers: { Authorization: token } })
+  },
   delete: id =>
     api.delete(`/saving/${id}`, { headers: { Authorization: token } }),
 }
 
 export const apiTransaction = {
   getAll: () => api.get('/transactions', { headers: { Authorization: token } }),
-  getLast: () => api.get('/transactions/transaction/last', { headers: { Authorization: token } }),
+  getLast: () =>
+    api.get('/transactions/transaction/last', {
+      headers: { Authorization: token },
+    }),
   getFiltered: query =>
     api.get(`/transactions?${query}`, { headers: { Authorization: token } }),
   getById: id =>
     api.get(`/transactions/${id}`, { headers: { Authorization: token } }),
-  create: data =>
-    api.post('/transactions', data, { headers: { Authorization: token } }),
+  create: data => {
+    console.log({ data })
+    api.post('/transactions', data, { headers: { Authorization: token } })
+  },
   update: (id, data) =>
     api.patch(`/transactions/${id}`, data, {
       headers: { Authorization: token },

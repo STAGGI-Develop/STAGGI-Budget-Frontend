@@ -21,21 +21,25 @@ const Signup = () => {
   const {
     reset: resetFirstName,
     touched: touchedFirstName,
+    setValue: setFirstNameValue,
     ...firstName
   } = useInput('text')
   const {
     reset: resetLastName,
     touched: touchedLastName,
+    setValue: setLastNameValue,
     ...lastName
   } = useInput('text')
   const {
     reset: resetEmail,
     touched: touchedEmail,
+    setValue: setEmailValue,
     ...email
   } = useInput('text')
   const {
     reset: resetPassword,
     touched: touchedPassword,
+    setValue: setPasswordValue,
     ...password
   } = useInput('password')
 
@@ -87,12 +91,14 @@ const Signup = () => {
     <Stack flex={1} direction='row' minH='100vh'>
       {/* Form */}
       <Stack
-        w='50%'
-        paddingX='10rem'
+        w={{ base: '100%', sm: 'fit', lg: '50%' }}
+        display='grid'
+        marginX='auto'
+        paddingX={{ base: '4rem', lg: '10rem' }}
         paddingTop='4rem'
         paddingBottom='2rem'
         // paddingBottom="50px"
-        justify='flex-start'
+        justify='center'
         align='flex-start'
         spacing='40px'
         // overflow="hidden"
@@ -162,6 +168,7 @@ const Signup = () => {
               First name
             </FormLabel>
             <Input
+              minW='320px'
               placeholder='First name'
               size='lg'
               height='48px'
@@ -184,6 +191,7 @@ const Signup = () => {
               Last name
             </FormLabel>
             <Input
+              minW='320px'
               placeholder='Last name'
               size='lg'
               height='48px'
@@ -206,6 +214,7 @@ const Signup = () => {
               Email
             </FormLabel>
             <Input
+              minW='320px'
               placeholder='Email'
               size='lg'
               height='48px'
@@ -226,6 +235,7 @@ const Signup = () => {
               Password
             </FormLabel>
             <Input
+              minW='320px'
               placeholder='Password'
               size='lg'
               height='48px'
@@ -276,7 +286,11 @@ const Signup = () => {
       </Stack>
 
       {/* Info section */}
-      <Stack w='50%' background='staggi-blue.600' />
+      <Stack
+        w={{ base: 0, lg: '50%' }}
+        background='staggi-blue.600'
+        display={{ base: 'none', lg: 'block' }}
+      />
     </Stack>
   )
 }

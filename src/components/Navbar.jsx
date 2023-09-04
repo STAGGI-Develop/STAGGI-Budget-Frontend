@@ -33,10 +33,10 @@ const CustomTab = React.forwardRef((props, ref) => {
       {...tabProps}
       as={Link}
       to={props.to}
-      w='7rem'
+      w={{ base: '3.5rem', sm: '5rem', md: '7rem' }}
       padding='0px'
       roundedTop='md'
-      fontSize='.75rem'
+      fontSize={{ base: '2xs', md: '.75rem' }}
       fontWeight='medium'
       color='gray.100'
       outline='none'
@@ -160,6 +160,7 @@ const Navbar = () => {
           lineHeight='1.2rem'
           cursor='default'
           color='gray.100'
+          display={{ base: 'none', md: 'block' }}
         >
           <Text fontSize='1.2rem' fontWeight='bold'>
             Budget
@@ -202,12 +203,12 @@ const Navbar = () => {
             </MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
 
-            <MenuItem as={Link} to='/signin' textColor='gray.400'>
+            {/* <MenuItem as={Link} to='/signin' textColor='gray.400'>
               Sign In - Temporal
             </MenuItem>
             <MenuItem as={Link} to='/signup' textColor='gray.400'>
               Sign Up - Temporal
-            </MenuItem>
+            </MenuItem> */}
           </MenuList>
         </Menu>
       </Stack>

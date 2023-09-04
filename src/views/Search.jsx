@@ -27,13 +27,13 @@ const leftContent = ({
   search,
 }) => {
   return (
-    <Stack display='grid' justifyContent='center' w='100%'>
+    <Stack display='grid' justifyContent='center' w='100%' px='.8rem'>
       <Text textStyle='cardHeader' color='gray.500'>
         Filter transactions
       </Text>
       <Stack display='grid' gap='1.75rem' layerStyle='card' spacing='.7rem'>
         <FormControl>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>Title</FormLabel>
           <Input
             {...searchValue}
             placeholder='Vacation'
@@ -123,13 +123,13 @@ const rightContent = ({ transactions, isLoading }) => {
     )
   }
   return (
-    <Stack display='grid' w='full'>
+    <Stack w='full' px='1.2rem'>
       <Stack>
         <Text textStyle='cardHeader' color='gray.500'>
           Transactions
         </Text>
       </Stack>
-      <Stack w='full' layerStyle='card'>
+      <Stack w='full' layerStyle='card' overflow='hidden'>
         <TransactionsTable transactions={transactions.data} />
       </Stack>
     </Stack>
@@ -137,7 +137,7 @@ const rightContent = ({ transactions, isLoading }) => {
 }
 
 const Search = () => {
-  const { reset, touched, ...searchValue } = useInput('text')
+  const { reset, touched, setValue, ...searchValue } = useInput('text')
   const [type, setType] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')

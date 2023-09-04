@@ -7,15 +7,19 @@ const Home = () => {
   return (
     <Stack
       h='full'
-      marginX={{
+      paddingX={{
         base: '1rem',
         sm: '4rem',
         md: '10rem',
         lg: '4rem',
-        xl: '10rem',
+        xl: '6rem',
       }}
+      marginX='auto'
+      maxW='1800px'
+      overflow='hidden'
       marginY='1.5rem'
       direction={{ base: 'column', lg: 'row' }}
+      justify='center'
       spacing='2rem'
       // overflow="hidden"
       // justify="flex-start"

@@ -7,13 +7,16 @@ const ContentLayout = ({
   rightContentProps = null,
 }) => (
   <Stack
-    h="full"
-    marginX="10rem"
-    marginY="1.5rem"
-    direction="row"
-    spacing="2rem"
-    justify="center"
-    align="flex-start"
+    h='full'
+    marginX={{ base: 'auto', xl: '6rem' }}
+    marginY={{ base: '3rem', xl: '1.5rem' }}
+    pb='2rem'
+    direction={{ base: 'column', xl: 'row' }}
+    spacing='2rem'
+    justify='center'
+    align={{ base: 'center', xl: 'flex-start' }}
+    overflow='hidden'
+    alignSelf='stretch'
   >
     {/*
     =======
@@ -34,12 +37,7 @@ const ContentLayout = ({
     >>>>>>> develop
     */}
     {/* Left column */}
-    <Stack
-      flex={0.35}
-      justify="flex-start"
-      align="flex-start"
-      spacing=".5rem"
-    >
+    <Stack flex={0.35} justify='flex-start' align='flex-start' spacing='.5rem'>
       {/*
       =======
       paddingX='2rem'
@@ -55,12 +53,7 @@ const ContentLayout = ({
     </Stack>
 
     {/* Right column */}
-    <Stack
-      flex={0.55}
-      justify="flex-start"
-      align="flex-start"
-      spacing=".5rem"
-    >
+    <Stack flex={0.55} justify='flex-start' align='flex-start' spacing='.5rem'>
       {/*
       =======
       flex={0.65}

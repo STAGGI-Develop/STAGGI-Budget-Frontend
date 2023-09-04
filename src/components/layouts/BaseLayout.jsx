@@ -14,7 +14,7 @@ const Layout = () => {
 
   if (isLoading) {
     return (
-      <Stack minH='100vh' justify='center' align='center'>
+      <Stack minH='100vh' justify='center' align='center' overflow='hidden'>
         <Spinner
           thickness='4px'
           speed='0.65s'

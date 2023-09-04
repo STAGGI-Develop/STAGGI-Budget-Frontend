@@ -19,5 +19,6 @@ export const useInput = type => {
     onChange,
     reset,
     touched,
+    setValue,
   }
 }
